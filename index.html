@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>متخصصان رشد دیجیتال · سئو · ادز · طراحی · اتوماسیون</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#05070e;--bg2:#0a0e1a;--card:#111827;--text:#f2f5fb;--soft:#a0aec4;--muted:#5c6b84;--gold:#ffc94a;--cyan:#2ef5e4;--magenta:#ff3d9a;--lime:#c4ff4d;--violet:#9b7bff;--orange:#ff8a3d}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:auto}
+body{font-family:'Vazirmatn',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:15.5px;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.mono{font-family:'IBM Plex Mono',monospace}
+.container{max-width:1140px;margin:0 auto;padding:0 1.4rem;position:relative;z-index:2}
+
+#loader{position:fixed;inset:0;z-index:99999;background:#05070e;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;
+  animation:loaderGone 0.4s ease 1.4s forwards;pointer-events:auto}
+#loader.is-hidden{opacity:0!important;visibility:hidden!important;pointer-events:none!important;display:none!important}
+@keyframes loaderGone{to{opacity:0;visibility:hidden;pointer-events:none}}
+.loader-bar{width:120px;height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden}
+.loader-bar i{display:block;height:100%;width:0;background:var(--cyan);border-radius:2px;
+  animation:loaderFill 1.2s ease forwards}
+@keyframes loaderFill{to{width:100%}}
+.loader-text{font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.18em;color:var(--soft);text-transform:uppercase}
+
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:.8rem 0;background:rgba(5,7,14,.75);backdrop-filter:blur(12px);border-bottom:1px solid transparent;transition:border-color .25s}
+.nav.scrolled{border-bottom-color:rgba(255,255,255,.06)}
+.nav-inner{max-width:1140px;margin:0 auto;padding:0 1.4rem;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-weight:800;font-size:.92rem;color:var(--text);text-decoration:none}.nav-logo span{color:var(--cyan)}
+.nav-links{display:flex;gap:.2rem;list-style:none}
+.nav-links a{font-size:.78rem;color:var(--soft);text-decoration:none;padding:5px 11px;border-radius:7px;transition:color .15s,background .15s}
+.nav-links a:hover{color:var(--text);background:rgba(255,255,255,.05)}
+.nav-toggle{display:none;background:none;border:none;color:var(--text);font-size:1.3rem;cursor:pointer}
+@media(max-width:768px){.nav-links{display:none;position:absolute;top:100%;left:0;right:0;background:rgba(8,12,22,.97);flex-direction:column;padding:1rem;border-bottom:1px solid rgba(255,255,255,.06)}.nav-links.open{display:flex}.nav-toggle{display:block}}
+
+/* GUIDE - mischievous */
+#guide{position:fixed;z-index:900;width:52px;height:52px;pointer-events:none;will-change:left,top;left:16px;top:40%}
+.guide-face{
+  width:48px;height:48px;border-radius:50%;
+  background:linear-gradient(145deg,#9b7bff,#2ef5e4);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 4px 16px rgba(155,123,255,.4);
+  border:2px solid rgba(255,255,255,.2);
+  position:relative;
+}
+.guide-face .eye{position:absolute;width:5px;height:5px;background:#05070e;border-radius:50%;top:16px}
+.guide-face .eye.l{left:12px}.guide-face .eye.r{right:12px}
+.guide-face .mouth{position:absolute;bottom:11px;width:12px;height:6px;border:2px solid #05070e;border-top:none;border-radius:0 0 10px 10px}
+.guide-bubble{
+  position:absolute;left:calc(100% + 10px);top:50%;transform:translateY(-50%) scale(.92);
+  min-width:150px;max-width:190px;
+  background:rgba(17,24,39,.97);border:1px solid rgba(46,245,228,.35);
+  border-radius:4px 12px 12px 12px;padding:9px 12px;
+  font-size:.74rem;color:var(--soft);line-height:1.5;
+  box-shadow:0 8px 24px rgba(0,0,0,.5);
+  opacity:0;pointer-events:none;
+  transition:opacity .25s,transform .25s;
+}
+.guide-bubble.on{opacity:1;transform:translateY(-50%) scale(1)}
+.guide-bubble strong{color:var(--cyan)}
+@media(max-width:600px){
+  #guide{width:40px;height:40px;left:8px}
+  .guide-face{width:38px;height:38px}
+  .guide-bubble{min-width:130px;max-width:155px;font-size:.68rem;padding:7px 10px;left:calc(100% + 8px)}
+}
+
+.hero{min-height:100vh;position:relative;display:flex;align-items:center;padding:6.5rem 0 4.5rem;overflow:hidden}
+.hero-grid{position:absolute;inset:0;opacity:.14;background-image:linear-gradient(rgba(46,245,228,.2) 1px,transparent 1px),linear-gradient(90deg,rgba(46,245,228,.2) 1px,transparent 1px);background-size:44px 44px}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 65% 50% at 15% 30%,rgba(155,123,255,.22) 0%,transparent 55%),radial-gradient(ellipse 55% 45% at 85% 70%,rgba(46,245,228,.12) 0%,transparent 50%),var(--bg)}
+.blob{position:absolute;border-radius:45% 55% 50% 50%/50% 45% 55% 50%;filter:blur(48px);opacity:.5;pointer-events:none}
+.blob-1{width:360px;height:360px;background:linear-gradient(135deg,#9b7bff,#ff3d9a);top:0;left:-6%}
+.blob-2{width:240px;height:240px;background:linear-gradient(135deg,#2ef5e4,#c4ff4d);bottom:8%;right:-4%}
+.hero-content{position:relative;z-index:3;max-width:780px}
+.hero-tag{display:inline-flex;font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.12em;color:var(--cyan);text-transform:uppercase;border:1px solid rgba(46,245,228,.35);background:rgba(46,245,228,.1);padding:6px 14px;border-radius:40px;margin-bottom:1.4rem}
+.hero h1{font-size:clamp(2rem,5.2vw,3.3rem);font-weight:900;line-height:1.28;letter-spacing:-.02em;margin-bottom:1.2rem}
+.hero h1 .a1{color:var(--gold)}.hero h1 .a2{color:var(--cyan)}
+.hero-lead{font-size:1.02rem;color:var(--soft);max-width:520px;margin-bottom:2.2rem;line-height:1.8}
+.hero-stats{display:flex;flex-wrap:wrap;gap:1.7rem;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.07)}
+.stat .n{font-family:'IBM Plex Mono',monospace;font-size:1.5rem;font-weight:600;display:block}
+.stat .n.c1{color:var(--gold)}.stat .n.c2{color:var(--cyan)}.stat .n.c3{color:var(--magenta)}.stat .n.c4{color:var(--lime)}
+.stat .l{font-size:.72rem;color:var(--muted);margin-top:2px}
+
+.process{position:relative;height:360vh}
+.process-pin{position:sticky;top:0;height:100vh;display:flex;align-items:center;overflow:hidden;background:var(--bg2)}
+@media(max-width:768px){
+  .process{height:auto!important;min-height:0}
+  .process-pin{position:relative!important;height:auto!important;min-height:auto;padding:3.5rem 0;top:auto}
+}
+.process-inner{width:100%;max-width:1140px;margin:0 auto;padding:0 1.4rem;display:grid;grid-template-columns:1.15fr .85fr;gap:2.8rem;align-items:center}
+@media(max-width:900px){.process-inner{grid-template-columns:1fr;gap:1.8rem;text-align:center}.process-visual{order:-1;margin:0 auto}}
+.process-phase{font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.1em;color:var(--gold);margin-bottom:.45rem;text-transform:uppercase}
+.process-copy h2{font-size:clamp(1.4rem,3vw,2rem);font-weight:800;margin-bottom:.8rem}
+.process-copy p{color:var(--soft);font-size:.95rem;max-width:460px;line-height:1.75}
+@media(max-width:900px){.process-copy p{margin:0 auto}}
+.process-visual{position:relative;width:min(270px,70vw);height:min(270px,70vw)}
+.p-shape{position:absolute;inset:0;border-radius:30% 70% 70% 30%/30% 30% 70% 70%;background:linear-gradient(145deg,rgba(155,123,255,.4),rgba(46,245,228,.25));border:1.5px solid rgba(46,245,228,.35);box-shadow:0 0 60px rgba(155,123,255,.18)}
+.p-ring{position:absolute;inset:-12px;border-radius:40% 60% 50% 50%/45% 40% 60% 55%;border:1.5px dashed rgba(255,61,154,.35);pointer-events:none}
+.p-core{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:55%;height:55%;border-radius:50%;background:var(--card);border:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.p-core .val{font-family:'IBM Plex Mono',monospace;font-size:1.3rem;font-weight:600;color:var(--cyan)}
+.p-core .lbl{font-size:.62rem;color:var(--muted)}
+.phase-controls{display:flex;align-items:center;gap:12px;margin-top:1.2rem}
+@media(max-width:900px){.phase-controls{justify-content:center}}
+.phase-btn{width:36px;height:36px;border-radius:50%;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:var(--text);font-size:1.2rem;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center}
+.phase-btn:active{background:rgba(46,245,228,.2);border-color:var(--cyan)}
+.phase-dots{display:flex;gap:8px}
+.phase-dots span{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.15);transition:background .25s,transform .25s;cursor:pointer}
+.phase-dots span.active{background:var(--cyan);transform:scale(1.35)}
+#jsStatus{position:fixed;top:8px;left:8px;z-index:100001;font:10px/1.2 'IBM Plex Mono',monospace;color:#0f0;background:rgba(0,0,0,.7);padding:4px 8px;border-radius:4px;pointer-events:none;opacity:.85}
+
+
+section{padding:4.5rem 0}
+.sec-head{margin-bottom:2.2rem}
+.sec-head .ey{font-family:'IBM Plex Mono',monospace;font-size:.64rem;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;margin-bottom:.35rem}
+.sec-head h2{font-size:clamp(1.4rem,2.9vw,1.95rem);font-weight:800}
+.sec-head p{color:var(--soft);margin-top:.5rem;max-width:520px}
+
+.svc-grid{display:grid;gap:1.15rem}
+.svc{background:linear-gradient(145deg,#141c30,#0c1220);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.75rem 1.55rem;display:grid;grid-template-columns:auto 1fr;gap:1.35rem;transition:border-color .25s,transform .25s,box-shadow .25s;position:relative;overflow:hidden}
+.svc::before{content:'';position:absolute;top:0;right:0;width:4px;height:100%;background:var(--sc);opacity:.7}
+.svc:hover{border-color:rgba(255,255,255,.16);transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.3)}
+.svc-icon{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.45rem;flex-shrink:0;background:var(--sb);color:var(--sc);border:1px solid var(--sbo)}
+.svc:nth-child(1){--sc:var(--cyan);--sb:rgba(46,245,228,.12);--sbo:rgba(46,245,228,.3)}
+.svc:nth-child(2){--sc:var(--magenta);--sb:rgba(255,61,154,.12);--sbo:rgba(255,61,154,.3)}
+.svc:nth-child(3){--sc:var(--gold);--sb:rgba(255,201,74,.12);--sbo:rgba(255,201,74,.3)}
+.svc:nth-child(4){--sc:var(--lime);--sb:rgba(196,255,77,.12);--sbo:rgba(196,255,77,.25)}
+.svc:nth-child(5){--sc:var(--violet);--sb:rgba(155,123,255,.14);--sbo:rgba(155,123,255,.32)}
+.svc h3{font-size:1.18rem;font-weight:800;margin-bottom:.55rem;letter-spacing:-.01em}
+.svc p{font-size:.92rem;color:var(--soft);line-height:1.8}
+.svc-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:1rem}
+.svc-tags span{font-size:.7rem;color:var(--soft);background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);padding:4px 11px;border-radius:5px}
+
+.feat-desktop{display:block}.feat-mobile{display:none}
+@media(max-width:768px){.feat-desktop{display:none}.feat-mobile{display:block}}
+.stack-card{min-height:100vh;display:flex;align-items:center;position:sticky;top:0;padding:1.8rem 0}
+.stack-card .card-inner{width:100%;max-width:1140px;margin:0 auto;padding:1.6rem 1.3rem;border-radius:16px;background:linear-gradient(160deg,#161e32,#0c1220);border:1px solid rgba(255,255,255,.08);display:grid;grid-template-columns:1.1fr .9fr;gap:1.8rem;align-items:center;box-shadow:0 20px 50px rgba(0,0,0,.35);min-height:min(68vh,500px)}
+@media(max-width:860px){.stack-card .card-inner{grid-template-columns:1fr;min-height:auto}}
+.sc-badge{display:inline-flex;font-family:'IBM Plex Mono',monospace;font-size:.6rem;letter-spacing:.05em;padding:4px 10px;border-radius:5px;margin-bottom:.8rem}
+.sc-badge.int{color:var(--cyan);background:rgba(46,245,228,.1);border:1px solid rgba(46,245,228,.28)}
+.sc-badge.mil{color:var(--lime);background:rgba(196,255,77,.1);border:1px solid rgba(196,255,77,.25)}
+.sc-title{font-size:clamp(1.15rem,2.4vw,1.5rem);font-weight:800;margin-bottom:.45rem;line-height:1.3}
+.sc-title a{color:inherit;text-decoration:none;border-bottom:1px dotted rgba(255,255,255,.28)}
+.sc-desc{font-size:.88rem;color:var(--soft);margin-bottom:.8rem;line-height:1.65}
+.sc-result{font-size:.8rem;font-weight:600;color:var(--lime);display:flex;align-items:center;gap:6px}
+.sc-result::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--lime);box-shadow:0 0 6px var(--lime)}
+.sc-visual{height:160px;border-radius:11px;background:linear-gradient(135deg,rgba(46,245,228,.07),rgba(155,123,255,.1));border:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center}
+.sc-visual .big-num{font-family:'IBM Plex Mono',monospace;font-size:2.5rem;font-weight:600}
+.sc-visual .c1{color:var(--cyan)}.sc-visual .c2{color:var(--magenta)}.sc-visual .c3{color:var(--lime)}.sc-visual .c4{color:var(--gold)}
+.m-feat{background:linear-gradient(160deg,#161e32,#0c1220);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:1.25rem;margin-bottom:.9rem}
+.m-feat .sc-title{font-size:1.1rem}
+
+.mp-item{background:var(--card);border:1px solid rgba(255,255,255,.06);border-radius:11px;padding:1.1rem 1.2rem;margin-bottom:.65rem;display:grid;grid-template-columns:1fr auto;gap:.9rem;align-items:start;transition:border-color .2s}
+.mp-item:hover{border-color:rgba(255,255,255,.11)}
+@media(max-width:600px){.mp-item{grid-template-columns:1fr}}
+.mp-meta{font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--gold);letter-spacing:.04em;margin-bottom:.15rem}
+.mp-title{font-size:.92rem;font-weight:700;margin-bottom:.2rem}
+.mp-title a{color:inherit;text-decoration:none;border-bottom:1px dotted rgba(255,255,255,.22)}
+.mp-desc{font-size:.82rem;color:var(--soft)}
+.mp-tag{font-family:'IBM Plex Mono',monospace;font-size:.56rem;background:rgba(196,255,77,.08);color:var(--lime);border:1px solid rgba(196,255,77,.18);padding:3px 8px;border-radius:4px;white-space:nowrap}
+
+/* BUDGET SLIDER */
+.budget-section{padding:4.5rem 0;background:linear-gradient(180deg,transparent,rgba(155,123,255,.03),transparent)}
+.budget-intro{text-align:center;max-width:600px;margin:0 auto 1.8rem;color:var(--soft);font-size:.92rem}
+.slider-wrap{max-width:520px;margin:0 auto 1.6rem;text-align:center}
+.slider-label{font-size:.82rem;color:var(--muted);margin-bottom:.9rem}
+.slider-steps{display:flex;justify-content:space-between;margin-bottom:.45rem;padding:0 2px}
+.slider-steps span{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--muted);transition:color .2s,transform .2s;cursor:pointer}
+.slider-steps span.on{color:var(--gold);font-weight:600;transform:scale(1.08)}
+.slider-hint{font-size:.78rem;color:var(--soft);margin-top:.7rem;min-height:1.3em}
+.budget-slider{
+  -webkit-appearance:none;appearance:none;width:100%;height:10px;border-radius:5px;
+  background:linear-gradient(90deg,rgba(160,174,196,.35) 0%,rgba(46,245,228,.45) 50%,rgba(255,201,74,.55) 100%);
+  outline:none;cursor:pointer;
+}
+.budget-slider::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;background:var(--cyan);border:3px solid #0a0e1a;box-shadow:0 0 14px rgba(46,245,228,.55);cursor:grab}
+.budget-slider::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--cyan);border:3px solid #0a0e1a;cursor:grab}
+.coins-row{display:flex;justify-content:center;align-items:center;gap:8px;min-height:48px;margin:1.2rem 0 1.8rem;flex-wrap:wrap}
+.shared-perks{display:grid;grid-template-columns:repeat(4,1fr);gap:.9rem;margin-top:1.6rem}
+@media(max-width:800px){.shared-perks{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.shared-perks{grid-template-columns:1fr}}
+.perk{display:flex;gap:10px;align-items:flex-start;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:1rem 1.05rem}
+.perk-ico{font-size:1.2rem;flex-shrink:0;line-height:1.3}
+.perk strong{display:block;font-size:.88rem;margin-bottom:.15rem;color:var(--text)}
+.perk span{font-size:.76rem;color:var(--muted);line-height:1.5}
+.coin{
+  width:34px;height:34px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'IBM Plex Mono',monospace;font-size:.7rem;font-weight:600;color:rgba(0,0,0,.55);
+  box-shadow:0 2px 8px rgba(0,0,0,.3);
+  opacity:1;transform:scale(1);
+  transition:transform .25s ease,opacity .25s ease;
+}
+.plan-cats{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-top:.5rem}
+@media(max-width:700px){.plan-cats{grid-template-columns:1fr}}
+.plan-cat{background:linear-gradient(150deg,#141c30,#0c1220);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:1.5rem 1.35rem;transition:border-color .25s,opacity .3s,transform .3s}
+.plan-cat h3{font-size:1.08rem;font-weight:800;margin-bottom:.3rem;display:flex;align-items:center;gap:8px}
+.plan-cat h3 .ico{font-size:1.15rem}
+.plan-cat .cat-desc{font-size:.85rem;color:var(--soft);margin-bottom:1.05rem;line-height:1.65}
+.plan-cat ul{list-style:none}
+.plan-cat li{font-size:.83rem;color:var(--soft);padding:.38rem 0;border-bottom:1px solid rgba(255,255,255,.04);display:flex;align-items:flex-start;gap:8px;line-height:1.45}
+.plan-cat li .li-ico{flex-shrink:0;width:18px;text-align:center;font-size:.85rem;line-height:1.45;opacity:.9}
+.plan-cat.dim{opacity:.4;transform:scale(.97);pointer-events:none}
+.plan-level{font-family:'IBM Plex Mono',monospace;font-size:.65rem;color:var(--gold);margin-bottom:.75rem;letter-spacing:.03em}
+.plan-badge{display:inline-flex;align-items:center;gap:5px;font-size:.68rem;color:var(--cyan);background:rgba(46,245,228,.08);border:1px solid rgba(46,245,228,.22);padding:3px 9px;border-radius:5px;margin-top:1rem}
+
+.team-g{display:grid;grid-template-columns:repeat(2,1fr);gap:.9rem}
+@media(max-width:720px){.team-g{grid-template-columns:1fr}}
+.mem{background:linear-gradient(150deg,#141c2e,#0c1220);border:1px solid rgba(255,255,255,.07);border-radius:13px;padding:1.35rem;transition:border-color .2s}
+.mem:hover{border-color:rgba(255,255,255,.13)}
+.mem-role{font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--cyan);letter-spacing:.07em;text-transform:uppercase;margin-bottom:.22rem}
+.mem-name{font-size:1.05rem;font-weight:700;margin-bottom:.1rem}
+.mem-loc{font-size:.72rem;color:var(--muted);margin-bottom:.65rem}
+.mem-bio{font-size:.83rem;color:var(--soft);line-height:1.65}
+.mem-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:.75rem}
+.mem-tags span{font-size:.64rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);padding:2px 8px;border-radius:4px;color:var(--soft)}
+
+.approach{background:linear-gradient(145deg,#121a2c,#0c1220);border:1px solid rgba(255,255,255,.07);border-radius:13px;padding:2rem 1.7rem}
+.approach h3{font-size:1.1rem;margin-bottom:.7rem}
+.approach>p{color:var(--soft);margin-bottom:.9rem;max-width:680px}
+.ap-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-top:1rem}
+@media(max-width:720px){.ap-grid{grid-template-columns:1fr}}
+.ap strong{display:block;font-size:.9rem;margin-bottom:.22rem;color:var(--gold)}
+.ap span{font-size:.8rem;color:var(--muted)}
+
+.cta{text-align:center;padding:4.5rem 0 5rem;position:relative}
+.cta::before{content:'';position:absolute;inset:18% 18%;background:radial-gradient(ellipse,rgba(155,123,255,.1) 0%,transparent 70%);pointer-events:none}
+.cta h2{font-size:clamp(1.35rem,2.8vw,1.85rem);margin-bottom:.6rem;position:relative}
+.cta p{color:var(--soft);margin-bottom:1.4rem;max-width:420px;margin-left:auto;margin-right:auto;position:relative}
+.cta-links{display:flex;flex-wrap:wrap;justify-content:center;gap:.9rem 1.4rem;position:relative}
+.cta-links a{color:var(--text);text-decoration:none;font-size:.92rem;border-bottom:1px solid rgba(255,255,255,.14);padding-bottom:2px;transition:color .15s,border-color .15s}
+.cta-links a:hover{color:var(--cyan);border-color:var(--cyan)}
+footer{border-top:1px solid rgba(255,255,255,.06);padding:1.1rem;text-align:center;font-size:.72rem;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<div id="loader"><div class="loader-bar"><i id="loaderProg"></i></div><div class="loader-text">Loading</div></div>
+
+<div id="guide"><div class="guide-bubble on" id="gBubble">هی! از اینجا شروع کن 👀 اسکرول کن…</div><div class="guide-face" id="gFace"><span class="eye l"></span><span class="eye r"></span><span class="mouth"></span></div></div>
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#top" class="nav-logo">رشد <span>دیجیتال</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="منو">☰</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#process">فرآیند</a></li>
+      <li><a href="#services">خدمات</a></li>
+      <li><a href="#projects">برجسته</a></li>
+      <li><a href="#seo-works">سئو</a></li>
+      <li><a href="#design-works">طراحی</a></li>
+      <li><a href="#budget">بودجه</a></li>
+      <li><a href="#team">تیم</a></li>
+      <li><a href="#contact">تماس</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-bg"></div>
+  <div class="hero-grid" id="heroGrid"></div>
+  <div class="blob blob-1" id="b1"></div>
+  <div class="blob blob-2" id="b2"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-tag">سئو · ادز · طراحی · اتوماسیون n8n</div>
+      <h1>متخصصانی که<br><span class="a1">ترافیک واقعی</span>،<br>فروش پایدار و<br><span class="a2">زیرساخت دیجیتال</span><br>می‌سازند</h1>
+      <p class="hero-lead">چهار متخصص مستقل. در کار معمولی جدا؛ وقتی پروژه پیچیده می‌شود، کنار هم نتیجه می‌سازیم.</p>
+      <div class="hero-stats">
+        <div class="stat"><span class="n mono c1">۴</span><span class="l">متخصص</span></div>
+        <div class="stat"><span class="n mono c2">۱۸۰٪</span><span class="l">رشد ترافیک</span></div>
+        <div class="stat"><span class="n mono c3">میلیونی</span><span class="l">نمایش سرچ</span></div>
+        <div class="stat"><span class="n mono c4">n8n</span><span class="l">اتوماسیون</span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="process" id="process">
+  <div class="process-pin">
+    <div class="process-inner">
+      <div class="process-copy">
+        <div class="process-phase" id="pPhase">فاز ۰۱</div>
+        <h2 id="pTitle">از تحقیق تا تبدیل</h2>
+        <p id="pText">از داده شروع می‌کنیم: نیت جستجو، رفتار کاربر و رقابت. بعد معماری، محتوا و مسیر فروش را هم‌راستا می‌کنیم.</p>
+        <div class="phase-controls">
+          <button type="button" class="phase-btn" id="phasePrev" aria-label="قبلی">›</button>
+          <div class="phase-dots" id="phaseDots">
+            <span class="active" data-i="0"></span>
+            <span data-i="1"></span>
+            <span data-i="2"></span>
+            <span data-i="3"></span>
+            <span data-i="4"></span>
+          </div>
+          <button type="button" class="phase-btn" id="phaseNext" aria-label="بعدی">‹</button>
+        </div>
+      </div>
+      <div class="process-visual">
+        <div class="p-ring" id="pRing"></div>
+        <div class="p-shape" id="pShape"></div>
+        <div class="p-core"><span class="val mono" id="pVal">SEO</span><span class="lbl" id="pLbl">تکنیکال · محتوا</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="container">
+    <div class="sec-head"><div class="ey">خدمات</div><h2>پنج ستون تخصص</h2><p>یکی را بگیر یا چند تا را با هم — بسته به نیاز و بودجه.</p></div>
+    <div class="svc-grid">
+      <article class="svc"><div class="svc-icon">◇</div><div><h3>سئو تکنیکال، محتوایی و خارجی</h3><p>کیورد ریسرچ دقیق بر اساس نیت جستجو، معماری اطلاعات و Keyword Mapping، بهینه‌سازی Crawl و Core Web Vitals، استراتژی محتوا با Topical Authority، لینک‌سازی هدفمند و مانیتورینگ مداوم رتبه و ترافیک. پروژه‌هایی با حجم نمایش میلیونی در سرچ کنسول و رشدهای سه‌رقمی.</p><div class="svc-tags"><span>کیورد ریسرچ</span><span>تکنیکال</span><span>محتوا</span><span>لینک‌سازی</span><span>Looker Studio</span></div></div></article>
+      <article class="svc"><div class="svc-icon">◈</div><div><h3>گوگل ادز و تبلیغات عملکردی</h3><p>طراحی و مدیریت کمپین‌های جستجو، نمایش و ریمارکتینگ با تمرکز روی هزینه به‌ازای تبدیل. بهینه‌سازی مداوم بودجه، ساختار آگهی و صفحات فرود — هماهنگ با داده سئو تا بودجه جایی برود که واقعاً می‌فروشد.</p><div class="svc-tags"><span>Search Ads</span><span>Display</span><span>Remarketing</span><span>بهینه‌سازی بودجه</span></div></div></article>
+      <article class="svc"><div class="svc-icon">▣</div><div><h3>طراحی وب‌سایت و پشتیبانی فنی</h3><p>طراحی فروشگاهی و شرکتی با اولویت سرعت، تجربه کاربری موبایل و هماهنگی با سئو از روز اول. پیاده‌سازی وردپرس و ووکامرس، رفع باگ، به‌روزرسانی امنیتی و نگهداری مستمر تا سایت همیشه آماده رشد باشد.</p><div class="svc-tags"><span>وردپرس</span><span>ووکامرس</span><span>UI/UX</span><span>سرعت</span><span>پشتیبانی</span></div></div></article>
+      <article class="svc"><div class="svc-icon">⬡</div><div><h3>استراتژی فروش چندکاناله</h3><p>شناخت عملی بسترهای فروش ایرانی و بین‌المللی: باسلام، ترب، اسنپ‌پی و سیستم‌های اقساط، دیجی‌کالا، آمازون. مسیر فروش را متناسب با نوع کسب‌وکار و قوانین هر پلتفرم طراحی می‌کنیم تا ترافیک به فروش واقعی تبدیل شود.</p><div class="svc-tags"><span>باسلام</span><span>ترب</span><span>اسنپ‌پی</span><span>دیجی‌کالا</span><span>آمازون</span></div></div></article>
+      <article class="svc"><div class="svc-icon">⚡</div><div><h3>اتوماسیون و n8n</h3><p>ساخت گردش‌کارهای خودکار با n8n: اتصال CRM، اعلان‌ها، گزارش‌های دوره‌ای و همگام‌سازی داده بین ابزارها. کارهای تکراری تیم فروش و پشتیبانی کم می‌شود تا انرژی روی رشد بماند.</p><div class="svc-tags"><span>n8n</span><span>Webhook</span><span>CRM</span><span>گزارش خودکار</span><span>یکپارچه‌سازی</span></div></div></article>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="container" style="padding-bottom:.4rem"><div class="sec-head"><div class="ey">برجسته</div><h2>بین‌المللی و میلیونی</h2></div></div>
+  <div class="feat-desktop">
+    <div class="stack-card"><div class="card-inner"><div><div class="sc-badge int">◈ عمان</div><div class="sc-title"><a href="https://www.muscatlabs.com/" target="_blank" rel="noopener">muscatlabs.com</a></div><div class="sc-desc">سئو و ادز برای آزمایشگاه صنعتی عمان. دو‌زبانه و بازار خلیج.</div><div class="sc-result">سئو + Ads · عمان</div></div><div class="sc-visual"><span class="big-num c1 mono">OM</span></div></div></div>
+    <div class="stack-card"><div class="card-inner"><div><div class="sc-badge int">◈ مهاجرت</div><div class="sc-title"><a href="https://malekpourmie.net/" target="_blank" rel="noopener">malekpourmie.net</a></div><div class="sc-desc">سئو و ادز مؤسسه مهاجرتی چندزبانه.</div><div class="sc-result">سئو + Ads · چندملیتی</div></div><div class="sc-visual"><span class="big-num c2 mono">MIE</span></div></div></div>
+    <div class="stack-card"><div class="card-inner"><div><div class="sc-badge mil">◆ میلیونی</div><div class="sc-title"><a href="https://www.notary662th.ir/" target="_blank" rel="noopener">notary662th.ir</a></div><div class="sc-desc">رشد ارگانیک و محاسبه‌گر آنلاین دفاتر اسناد رسمی.</div><div class="sc-result">رتبه‌های ۱–۳ · نمایش میلیونی</div></div><div class="sc-visual"><span class="big-num c3 mono">1M+</span></div></div></div>
+    <div class="stack-card"><div class="card-inner"><div><div class="sc-badge mil">◆ میلیونی</div><div class="sc-title"><a href="https://davapich.com/" target="_blank" rel="noopener">davapich.com</a></div><div class="sc-desc">نمایش و کلیک میلیونی در سرچ کنسول.</div><div class="sc-result">نمایش و کلیک میلیونی</div></div><div class="sc-visual"><span class="big-num c4 mono">1M+</span></div></div></div>
+  </div>
+  <div class="feat-mobile container">
+    <div class="m-feat"><div class="sc-badge int">◈ عمان</div><div class="sc-title"><a href="https://www.muscatlabs.com/" target="_blank" rel="noopener">muscatlabs.com</a></div><div class="sc-desc">سئو و ادز آزمایشگاه صنعتی عمان.</div><div class="sc-result">سئو + Ads</div></div>
+    <div class="m-feat"><div class="sc-badge int">◈ مهاجرت</div><div class="sc-title"><a href="https://malekpourmie.net/" target="_blank" rel="noopener">malekpourmie.net</a></div><div class="sc-desc">سئو و ادز مؤسسه مهاجرتی.</div><div class="sc-result">سئو + Ads</div></div>
+    <div class="m-feat"><div class="sc-badge mil">◆ میلیونی</div><div class="sc-title"><a href="https://www.notary662th.ir/" target="_blank" rel="noopener">notary662th.ir</a></div><div class="sc-desc">رشد ارگانیک و محاسبه‌گر ثبتی.</div><div class="sc-result">نمایش میلیونی</div></div>
+    <div class="m-feat"><div class="sc-badge mil">◆ میلیونی</div><div class="sc-title"><a href="https://davapich.com/" target="_blank" rel="noopener">davapich.com</a></div><div class="sc-desc">نمایش و کلیک میلیونی.</div><div class="sc-result">نمایش میلیونی</div></div>
+  </div>
+</section>
+
+<section id="seo-works">
+  <div class="container">
+    <div class="sec-head"><div class="ey">سئو</div><h2>نمونه‌کارهای سئو</h2></div>
+    <div class="mp-item"><div><div class="mp-meta">۱۸۰٪ رشد</div><div class="mp-title"><a href="https://khoshbakhtshop.ir" target="_blank" rel="noopener">khoshbakhtshop.ir</a></div><div class="mp-desc">۱۸۰٪ رشد ترافیک ارگانیک در ۷ ماه.</div></div><span class="mp-tag">سئو</span></div>
+    <div class="mp-item"><div><div class="mp-meta">طراحی + سئو</div><div class="mp-title"><a href="https://vg-store.ir/" target="_blank" rel="noopener">vg-store.ir</a></div><div class="mp-desc">طراحی + سئوی کامل، نمره A سرعت.</div></div><span class="mp-tag">سئو</span></div>
+    <div class="mp-item"><div><div class="mp-meta">رشد فروش</div><div class="mp-title"><a href="https://khodetkala.com/" target="_blank" rel="noopener">khodetkala.com</a></div><div class="mp-desc">استراتژی سئو با رشد ترافیک و فروش.</div></div><span class="mp-tag">سئو</span></div>
+    <div class="mp-item"><div><div class="mp-meta">میلیونی</div><div class="mp-title"><a href="https://www.notary662th.ir/" target="_blank" rel="noopener">notary662th.ir</a></div><div class="mp-desc">رتبه‌های برتر کلمات ثبتی.</div></div><span class="mp-tag">سئو</span></div>
+  </div>
+</section>
+
+<section id="design-works">
+  <div class="container">
+    <div class="sec-head"><div class="ey">طراحی</div><h2>نمونه‌کارهای طراحی سایت</h2></div>
+    <div class="mp-item"><div><div class="mp-meta">فروشگاهی</div><div class="mp-title"><a href="https://pixiesoft.ir" target="_blank" rel="noopener">pixiesoft.ir</a></div><div class="mp-desc">گالری دکوری و اکسسوری وینتیج.</div></div><span class="mp-tag">طراحی</span></div>
+    <div class="mp-item"><div><div class="mp-meta">شرکتی</div><div class="mp-title"><a href="https://belsonco.ir" target="_blank" rel="noopener">belsonco.ir</a></div><div class="mp-desc">تولیدکننده ماشین لباسشویی.</div></div><span class="mp-tag">طراحی</span></div>
+    <div class="mp-item"><div><div class="mp-meta">فروشگاهی</div><div class="mp-title"><a href="https://mobilerayan.com/" target="_blank" rel="noopener">mobilerayan.com</a></div><div class="mp-desc">موبایل و لوازم جانبی.</div></div><span class="mp-tag">طراحی</span></div>
+    <div class="mp-item"><div><div class="mp-meta">شرکتی</div><div class="mp-title"><a href="http://hoodadco.ir/" target="_blank" rel="noopener">hoodadco.ir</a></div><div class="mp-desc">وب‌سایت شرکتی ریسپانسیو.</div></div><span class="mp-tag">طراحی</span></div>
+    <div class="mp-item"><div><div class="mp-meta">زیبایی</div><div class="mp-title"><a href="https://www.almabeauti.com/" target="_blank" rel="noopener">almabeauti.com</a></div><div class="mp-desc">فروشگاه محصولات زیبایی.</div></div><span class="mp-tag">طراحی</span></div>
+    <div class="mp-item"><div><div class="mp-meta">محتوایی</div><div class="mp-title"><a href="https://khabargaheketab.ir/" target="_blank" rel="noopener">khabargaheketab.ir</a></div><div class="mp-desc">سایت خبری کتاب.</div></div><span class="mp-tag">طراحی</span></div>
+  </div>
+</section>
+
+<section class="budget-section" id="budget">
+  <div class="container">
+    <div class="sec-head" style="text-align:center"><div class="ey">بودجه تو، پلان تو</div><h2>اسلایدر را بکش — سکه‌ها و پلان‌ها عوض می‌شوند</h2></div>
+    <p class="budget-intro">بودجه معمولاً با اندازه کسب‌وکار جور است. طراحی و سئو دو دستهٔ جدا هستند — هر کدام را با سطح مناسب خودت انتخاب کن. تحویل سریع، مالکیت کامل و پشتیبانی از ویژگی‌های ثابت ماست.</p>
+
+    <div class="slider-wrap">
+      <div class="slider-label">سطح بودجه را انتخاب کن — اسلایدر را بکش</div>
+      <div class="slider-steps">
+        <span data-v="0" onclick="window.setBudget&&window.setBudget(0)">محدود</span>
+        <span data-v="1" class="on" onclick="window.setBudget&&window.setBudget(1)">متوسط</span>
+        <span data-v="2" onclick="window.setBudget&&window.setBudget(2)">حرفه‌ای</span>
+      </div>
+      <input type="range" class="budget-slider" id="budgetSlider" min="0" max="2" step="1" value="1" aria-label="سطح بودجه"
+        oninput="window.setBudget&&window.setBudget(this.value)"
+        onchange="window.setBudget&&window.setBudget(this.value)">
+      <div class="slider-hint" id="budgetHint">مناسب رشد ماهانه فروشگاه و سایت خدماتی</div>
+    </div>
+
+    <div class="coins-row" id="coinsRow">
+      <div class="coin" style="background:#2ef5e4">$</div>
+      <div class="coin" style="background:#2ef5e4">$</div>
+      <div class="coin" style="background:#2ef5e4">$</div>
+      <div class="coin" style="background:#2ef5e4">$</div>
+    </div>
+
+    <div class="plan-cats">
+      <div class="plan-cat" id="catSeo" data-min="0">
+        <h3><span class="ico">◇</span> پلان‌های سئو و ادز</h3>
+        <div class="plan-level" id="seoLevel">سطح: رشد پایدار</div>
+        <div class="cat-desc" id="seoDesc">کیورد، تکنیکال، محتوا و در صورت نیاز گوگل ادز — متناسب با بودجه‌ای که انتخاب کردی.</div>
+        <ul id="seoList">
+          <li><span class="li-ico">🔍</span><span>تحقیق کلمات کلیدی عمیق</span></li>
+          <li><span class="li-ico">✍️</span><span>مقاله‌نویسی منظم</span></li>
+          <li><span class="li-ico">🔗</span><span>بک‌لینک هدفمند</span></li>
+          <li><span class="li-ico">🔗</span><span>ریپورتاژ در صورت نیاز</span></li>
+          <li><span class="li-ico">📊</span><span>گزارش دو‌هفته‌یک‌بار</span></li>
+          <li><span class="li-ico">📣</span><span>امکان کمپین ادز</span></li>
+        </ul>
+      </div>
+      <div class="plan-cat" id="catDesign" data-min="0">
+        <h3><span class="ico">▣</span> پلان‌های طراحی سایت</h3>
+        <div class="plan-level" id="designLevel">سطح: رشد پایدار</div>
+        <div class="cat-desc" id="designDesc">طراحی فروشگاهی یا شرکتی، سرعت و پشتیبانی — جدا از سئو، با بودجه خودت.</div>
+        <ul id="designList">
+          <li><span class="li-ico">🎨</span><span>طراحی اختصاصی UI/UX</span></li>
+          <li><span class="li-ico">🖥️</span><span>هاست پرسرعت طرف‌قرارداد + SSL</span></li>
+          <li><span class="li-ico">💬</span><span>پنل پیامکی</span></li>
+          <li><span class="li-ico">🚀</span><span>بهینه‌سازی سرعت</span></li>
+          <li><span class="li-ico">🔑</span><span>مالکیت کامل (دامنه تا افزونه)</span></li>
+          <li><span class="li-ico">🔑</span><span>دسترسی DirectAdmin</span></li>
+          <li><span class="li-ico">🛡️</span><span>۶ ماه پشتیبانی رایگان</span></li>
+          <li><span class="li-ico">📊</span><span>گزارش ماهانه</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="shared-perks">
+      <div class="perk"><span class="perk-ico">🚀</span><div><strong>تحویل سریع</strong><span>پروژه‌ها در کمترین زمان ممکن آماده می‌شوند</span></div></div>
+      <div class="perk"><span class="perk-ico">🔑</span><div><strong>مالکیت کامل</strong><span>دامنه، هاست، افزونه و دسترسی DirectAdmin مال توست</span></div></div>
+      <div class="perk"><span class="perk-ico">🛡️</span><div><strong>پشتیبانی</strong><span>تا ۶ ماه پشتیبانی رایگان در پلان‌های متوسط و بالاتر</span></div></div>
+      <div class="perk"><span class="perk-ico">📊</span><div><strong>گزارش دقیق</strong><span>گزارش ماهانه؛ در پلان حرفه‌ای روزانه هم هست</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="team">
+  <div class="container">
+    <div class="sec-head"><div class="ey">تیم</div><h2>متخصصان هم‌تکمیل</h2></div>
+    <div class="team-g">
+      <div class="mem"><div class="mem-role">سئو · طراحی · تکنیکال</div><div class="mem-name">محمد مهدی غفارپور</div><div class="mem-loc">قم / تهران</div><div class="mem-bio">عاشق ساختن چیزهایی هستم که هم سریع‌اند هم رتبه می‌گیرند. از کیورد ریسرچ تا طراحی فروشگاهی و پروژه‌های بین‌المللی — نتیجه در سرچ کنسول و فروش مهم است.</div><div class="mem-tags"><span>سئو</span><span>وردپرس</span><span>Ahrefs</span></div></div>
+      <div class="mem"><div class="mem-role">سئو · محتوا · ادز</div><div class="mem-name">فاطمه سلیمانی</div><div class="mem-loc">تهران / کرج</div><div class="mem-bio">محتوا و تبلیغات را طوری وصل می‌کنم که هم گوگل راضی باشد هم کاربر. سئوی خارجی، لینک‌سازی و آموزش عملی.</div><div class="mem-tags"><span>محتوا</span><span>Google Ads</span><span>آموزش</span></div></div>
+      <div class="mem"><div class="mem-role">پشتیبانی فنی</div><div class="mem-name">محمد امین محقق</div><div class="mem-loc">قم</div><div class="mem-bio">سایت را زنده نگه می‌دارم: رفع خطا، امنیت و هماهنگی با سئو و طراحی.</div><div class="mem-tags"><span>پشتیبانی</span><span>رفع باگ</span></div></div>
+      <div class="mem"><div class="mem-role">طراحی · پشتیبانی</div><div class="mem-name">دینا حیدریان</div><div class="mem-loc">کرمانشاه</div><div class="mem-bio">رابط کاربری تمیز و پیاده‌سازی مرتب — قشنگ و آماده سئو.</div><div class="mem-tags"><span>UI</span><span>پیاده‌سازی</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section><div class="container"><div class="approach"><h3>نحوه کار</h3><p>بیشتر مواقع مستقل. وقتی پروژه پیچیده است، تیم کامل کنار هم است.</p><div class="ap-grid"><div class="ap"><strong>شفافیت</strong><span>گزارش رتبه و ترافیک قابل فهم.</span></div><div class="ap"><strong>نتیجه</strong><span>استراتژی بر اساس داده.</span></div><div class="ap"><strong>زنجیره کامل</strong><span>از طراحی تا اتوماسیون.</span></div></div></div></div></section>
+
+<section class="cta" id="contact"><div class="container"><h2>بیایید پروژه را بچینیم</h2><p>اگر به رشد پایدار نیاز داری، مستقیم بنویس.</p><div class="cta-links"><a href="mailto:pesarekhobb85@gmail.com">pesarekhobb85@gmail.com</a><a href="mailto:fateme.soleymani99@gmail.com">fateme.soleymani99@gmail.com</a></div></div></section>
+<footer>متخصصان رشد دیجیتال · سئو · ادز · طراحی · n8n</footer>
+
+<script>
+/* ========== CORE (no GSAP required) ========== */
+var budgetData=[
+  {label:'محدود',coins:2,color:'#a0aec4',
+   seoLevel:'سطح: شروع هوشمند',
+   seoDesc:'مناسب کسب‌وکارهای کوچک یا شروع تست. تمرکز روی پایه‌های سئو با بودجه کنترل‌شده.',
+   seoItems:['تحقیق کلمات کلیدی پایه','بهینه‌سازی صفحات اصلی','مقالهٔ محدود ماهانه','گزارش ماهانه ساده'],
+   designLevel:'سطح: شروع هوشمند',
+   designDesc:'مناسب کسب‌وکارهای نوپا. طراحی تمیز و کاربردی با زیرساخت استاندارد.',
+   designItems:['طراحی قالب آمادهٔ سفارشی‌شده','هاست استاندارد + SSL','ریسپانسیو کامل','تحویل سریع','دسترسی کامل دامنه و هاست','۳ ماه پشتیبانی']},
+  {label:'متوسط',coins:4,color:'#2ef5e4',
+   seoLevel:'سطح: رشد پایدار',
+   seoDesc:'مناسب کسب‌وکارهای در حال رشد. تحقیق کلمات، محتوا، بک‌لینک و در صورت نیاز ریپورتاژ و ادز.',
+   seoItems:['تحقیق کلمات کلیدی عمیق','مقاله‌نویسی منظم','بک‌لینک هدفمند','ریپورتاژ در صورت نیاز','گزارش دو‌هفته‌یک‌بار','امکان کمپین ادز'],
+   designLevel:'سطح: رشد پایدار',
+   designDesc:'مناسب فروشگاه‌ها و شرکت‌های متوسط. طراحی اختصاصی‌تر، هاست سریع‌تر و پنل پیامکی.',
+   designItems:['طراحی اختصاصی UI/UX','هاست پرسرعت طرف‌قرارداد + SSL','پنل پیامکی','بهینه‌سازی سرعت','مالکیت کامل (دامنه تا افزونه)','دسترسی DirectAdmin','۶ ماه پشتیبانی رایگان','گزارش ماهانه']},
+  {label:'حرفه‌ای',coins:6,color:'#ffc94a',
+   seoLevel:'سطح: مقیاس کامل',
+   seoDesc:'مناسب کسب‌وکارهای بزرگ و چندکاناله. تحقیق کامل، محتوا، بک‌لینک، ریپورتاژ، کمپین ادز و اتوماسیون.',
+   seoItems:['تحقیق کلمات کلیدی جامع','مقاله‌نویسی تخصصی','بک‌لینک و ریپورتاژ','کمپین گوگل ادز','اتوماسیون گزارش با n8n','گزارش روزانه و ماهانه','داشبورد Looker Studio'],
+   designLevel:'سطح: مقیاس کامل',
+   designDesc:'مناسب برندهای جدی و کسب‌وکارهای بزرگ. طراحی منحصربه‌فرد، زیرساخت قوی، برندینگ و اتوماسیون.',
+   designItems:['طراحی کاملاً اختصاصی و برند','مشاوره برندینگ','هاست پرسرعت + زیرساخت قوی','پنل پیامکی و تبلیغاتی حرفه‌ای','SSL و امنیت پیشرفته','مالکیت کامل دامنه تا هاست و افزونه','دسترسی کامل DirectAdmin','اتوماسیون n8n','۶ ماه پشتیبانی رایگان','گزارش روزانه و ماهانه']}
+];
+
+var phases=[
+  {phase:'فاز ۰۱',title:'از تحقیق تا تبدیل',text:'از داده شروع می‌کنیم: نیت جستجو و رقابت. بعد معماری و مسیر فروش.',val:'SEO',lbl:'تکنیکال · محتوا',radius:'30% 70% 70% 30%/30% 30% 70% 70%',rot:0,bg:'linear-gradient(145deg,rgba(155,123,255,.4),rgba(46,245,228,.25))'},
+  {phase:'فاز ۰۲',title:'تبلیغات هدفمند',text:'ادز بر اساس داده سئو؛ بودجه جایی که تبدیل دارد.',val:'ADS',lbl:'جستجو · ریمارکتینگ',radius:'60% 40% 30% 70%/60% 30% 70% 40%',rot:22,bg:'linear-gradient(145deg,rgba(255,61,154,.35),rgba(155,123,255,.28))'},
+  {phase:'فاز ۰۳',title:'طراحی و پایداری',text:'سایت سریع و امن؛ از روز اول هماهنگ با سئو.',val:'WEB',lbl:'طراحی · سرعت',radius:'45% 55% 65% 35%/55% 45% 55% 45%',rot:-12,bg:'linear-gradient(145deg,rgba(255,201,74,.35),rgba(255,138,61,.25))'},
+  {phase:'فاز ۰۴',title:'فروش چندکاناله',text:'باسلام، ترب، دیجی‌کالا و آمازون با قوانین هر پلتفرم.',val:'SALE',lbl:'پلتفرم‌ها',radius:'70% 30% 45% 55%/40% 60% 40% 60%',rot:28,bg:'linear-gradient(145deg,rgba(196,255,77,.28),rgba(46,245,228,.25))'},
+  {phase:'فاز ۰۵',title:'اتوماسیون n8n',text:'کارهای تکراری خودکار تا تیم روی رشد تمرکز کند.',val:'n8n',lbl:'اتوماسیون',radius:'40% 60% 55% 45%/55% 45% 50% 50%',rot:-6,bg:'linear-gradient(145deg,rgba(155,123,255,.4),rgba(255,61,154,.25))'}
+];
+
+var tips=[
+  {id:'top',text:'هی! از اینجا شروع کن 👀 اسکرول کن پایین‌تر…'},
+  {id:'process',text:'هر فاز با اسکرول عوض می‌شه — عجله نکن!'},
+  {id:'services',text:'خدمات رو یکی یا چند تا با هم می‌تونی بگیری.'},
+  {id:'projects',text:'این‌ها پروژه‌های سنگین‌ان — بین‌المللی و میلیونی 🔥'},
+  {id:'seo-works',text:'بخش <strong>سئو</strong> جداست تا راحت پیدا کنی.'},
+  {id:'design-works',text:'و اینجا فقط <strong>طراحی سایت</strong>.'},
+  {id:'budget',text:'اسلایدر رو بکش! سکه‌ها و پلان سئو/طراحی عوض می‌شن 🪙'},
+  {id:'team',text:'چهار نفر؛ هر کی تو حوزه خودش دیوونه‌ست.'},
+  {id:'contact',text:'آماده حرفی؟ ایمیل بده 👋 من دیگه کارم تمومه!'}
+];
+
+function hideLoader(){
+  var el=document.getElementById('loader');
+  if(!el)return;
+  el.classList.add('is-hidden');
+  el.style.display='none';
+  el.style.pointerEvents='none';
+  el.style.opacity='0';
+  el.style.visibility='hidden';
+}
+setTimeout(hideLoader,1000);
+setTimeout(hideLoader,2000);
+
+function iconFor(t){
+  if(/کیورد|تحقیق/.test(t))return'🔍';
+  if(/مقاله|محتوا/.test(t))return'✍️';
+  if(/بک.?لینک|ریپورت/.test(t))return'🔗';
+  if(/ادز|کمپین|تبلیغ/.test(t))return'📣';
+  if(/گزارش|داشبورد/.test(t))return'📊';
+  if(/n8n|اتوماسیون/.test(t))return'⚡';
+  if(/طراحی|UI|برند/.test(t))return'🎨';
+  if(/هاست|زیرساخت|SSL|امنیت/.test(t))return'🖥️';
+  if(/پیامک|پنل/.test(t))return'💬';
+  if(/مالکیت|دسترسی|Direct|دامنه|افزونه/.test(t))return'🔑';
+  if(/پشتیبانی/.test(t))return'🛡️';
+  if(/سرعت|تحویل/.test(t))return'🚀';
+  if(/ووکامرس|پیاده‌سازی/.test(t))return'🛒';
+  if(/ممیزی|اولویت|بهینه‌سازی صفحات/.test(t))return'📋';
+  return'✓';
+}
+
+function renderBudget(level){
+  window.setBudget=renderBudget;
+  level=Math.max(0,Math.min(2,+level||0));
+  var d=budgetData[level];
+  if(!d)return;
+  var steps=document.querySelectorAll('.slider-steps span');
+  for(var i=0;i<steps.length;i++) steps[i].classList.toggle('on',i===level);
+  var hint=document.getElementById('budgetHint');
+  var hints=['کسب‌وکار کوچک / شروع تست — زیرساخت استاندارد','کسب‌وکار متوسط — هاست سریع، پنل پیامکی، بک‌لینک','کسب‌وکار بزرگ — برندینگ، زیرساخت قوی، ادز و اتوماسیون'];
+  if(hint) hint.textContent=hints[level];
+
+  var coinsRow=document.getElementById('coinsRow');
+  if(coinsRow){
+    coinsRow.innerHTML='';
+    for(var c=0;c<d.coins;c++){
+      var coin=document.createElement('div');
+      coin.className='coin';
+      coin.style.background=d.color;
+      coin.style.opacity='1';
+      coin.style.transform='scale(1)';
+      coin.textContent='$';
+      coinsRow.appendChild(coin);
+    }
+    if(window.gsap){
+      try{gsap.fromTo('.coin',{opacity:0,scale:.3},{opacity:1,scale:1,duration:.35,stagger:.06,ease:'back.out(1.6)'});}catch(e){}
+    }
+  }
+  var seoLevel=document.getElementById('seoLevel');
+  var seoDesc=document.getElementById('seoDesc');
+  var seoList=document.getElementById('seoList');
+  if(seoLevel)seoLevel.textContent=d.seoLevel;
+  if(seoDesc)seoDesc.textContent=d.seoDesc;
+  if(seoList)seoList.innerHTML=d.seoItems.map(function(t){return '<li><span class="li-ico">'+iconFor(t)+'</span><span>'+t+'</span></li>';}).join('');
+
+  var designLevel=document.getElementById('designLevel');
+  var designDesc=document.getElementById('designDesc');
+  var designList=document.getElementById('designList');
+  if(designLevel)designLevel.textContent=d.designLevel;
+  if(designDesc)designDesc.textContent=d.designDesc;
+  if(designList)designList.innerHTML=d.designItems.map(function(t){return '<li><span class="li-ico">'+iconFor(t)+'</span><span>'+t+'</span></li>';}).join('');
+}
+
+var curPhase=-1;
+function applyPhase(i){
+  i=Math.max(0,Math.min(4,i));
+  if(i===curPhase)return;
+  curPhase=i;
+  var p=phases[i];
+  var pShape=document.getElementById('pShape');
+  var pRing=document.getElementById('pRing');
+  var pVal=document.getElementById('pVal');
+  var pLbl=document.getElementById('pLbl');
+  var pTitle=document.getElementById('pTitle');
+  var pText=document.getElementById('pText');
+  var pPhase=document.getElementById('pPhase');
+  if(pVal)pVal.textContent=p.val;
+  if(pLbl)pLbl.textContent=p.lbl;
+  if(pTitle)pTitle.textContent=p.title;
+  if(pText)pText.textContent=p.text;
+  if(pPhase)pPhase.textContent=p.phase;
+  var dots=document.querySelectorAll('#phaseDots span');
+  for(var d=0;d<dots.length;d++) dots[d].classList.toggle('active',d===i);
+  if(pShape){
+    pShape.style.borderRadius=p.radius;
+    pShape.style.background=p.bg;
+    pShape.style.transform='rotate('+p.rot+'deg)';
+    if(window.gsap){try{gsap.to(pShape,{borderRadius:p.radius,rotation:p.rot,background:p.bg,duration:.4,ease:'power2.out'});}catch(e){}}
+  }
+  if(pRing){
+    pRing.style.transform='rotate('+(-p.rot*0.5)+'deg)';
+  }
+}
+
+var lastTip='';
+function showTip(id){
+  if(id===lastTip)return;
+  lastTip=id;
+  var t=null;
+  for(var i=0;i<tips.length;i++){if(tips[i].id===id){t=tips[i];break;}}
+  if(!t)return;
+  var bubble=document.getElementById('gBubble');
+  if(!bubble)return;
+  bubble.classList.remove('on');
+  bubble.innerHTML=t.text;
+  setTimeout(function(){bubble.classList.add('on');},30);
+}
+
+function updateGuidePos(){
+  var guide=document.getElementById('guide');
+  if(!guide)return;
+  var docH=Math.max(document.body.scrollHeight,document.documentElement.scrollHeight)-window.innerHeight;
+  var p=docH>0?window.scrollY/docH:0;
+  if(p<0)p=0;if(p>1)p=1;
+  var vh=window.innerHeight,vw=window.innerWidth;
+  var isMobile=vw<600;
+  var y=Math.max(110,Math.min(vh-110,100+p*(vh-220)));
+  var xWave=Math.sin(p*Math.PI*4)*(isMobile?16:26);
+  var x=Math.max(6,Math.min(isMobile?22:34,(isMobile?8:16)+xWave));
+  guide.style.top=y+'px';
+  guide.style.left=x+'px';
+  guide.style.right='auto';
+}
+
+function onScrollCore(){
+  updateGuidePos();
+  /* process by scroll only when section is tall (desktop) */
+  var proc=document.getElementById('process');
+  if(proc && proc.offsetHeight > window.innerHeight * 1.5){
+    var rect=proc.getBoundingClientRect();
+    var total=proc.offsetHeight-window.innerHeight;
+    if(total<1)total=1;
+    var scrolled=-rect.top;
+    var prog=scrolled/total;
+    if(prog<0)prog=0;if(prog>1)prog=1;
+    applyPhase(Math.min(4,Math.floor(prog*5)));
+  }
+  /* tips by section */
+  var ids=['top','process','services','projects','seo-works','design-works','budget','team','contact'];
+  var best=null,bestScore=99999;
+  for(var i=0;i<ids.length;i++){
+    var el=document.getElementById(ids[i]);
+    if(!el)continue;
+    var r=el.getBoundingClientRect();
+    var mid=r.top+r.height*0.3;
+    var dist=Math.abs(mid-window.innerHeight*0.4);
+    if(r.bottom>80&&r.top<window.innerHeight-40&&dist<bestScore){bestScore=dist;best=ids[i];}
+  }
+  if(best)showTip(best);
+  /* nav */
+  var nav=document.getElementById('nav');
+  if(nav)nav.classList.toggle('scrolled',window.scrollY>40);
+}
+
+function initCore(){
+  hideLoader();
+
+  /* visible proof JS is running */
+  var st=document.createElement('div');
+  st.id='jsStatus';
+  st.textContent='JS ✓';
+  document.body.appendChild(st);
+  setTimeout(function(){if(st.parentNode)st.parentNode.removeChild(st);},4000);
+
+  /* nav mobile */
+  var toggle=document.getElementById('navToggle');
+  var links=document.getElementById('navLinks');
+  if(toggle&&links){
+    toggle.addEventListener('click',function(){links.classList.toggle('open');});
+    var as=links.querySelectorAll('a');
+    for(var i=0;i<as.length;i++){
+      as[i].addEventListener('click',function(e){
+        links.classList.remove('open');
+        var h=this.getAttribute('href');
+        if(h&&h.charAt(0)==='#'){e.preventDefault();var t=document.querySelector(h);if(t)t.scrollIntoView({behavior:'smooth'});}
+      });
+    }
+  }
+
+  /* budget - pure JS + touch */
+  var slider=document.getElementById('budgetSlider');
+  renderBudget(slider?slider.value:1);
+  function onBudgetInput(){renderBudget(slider.value);}
+  if(slider){
+    slider.addEventListener('input',onBudgetInput);
+    slider.addEventListener('change',onBudgetInput);
+    slider.addEventListener('touchend',onBudgetInput);
+  }
+  var stepSpans=document.querySelectorAll('.slider-steps span');
+  for(var s=0;s<stepSpans.length;s++){
+    (function(el){
+      function go(){var v=el.getAttribute('data-v');if(slider)slider.value=v;renderBudget(v);}
+      el.addEventListener('click',go);
+      el.addEventListener('touchend',function(e){e.preventDefault();go();});
+    })(stepSpans[s]);
+  }
+
+  /* phase buttons + dots */
+  applyPhase(0);
+  var prev=document.getElementById('phasePrev');
+  var next=document.getElementById('phaseNext');
+  if(prev)prev.addEventListener('click',function(){applyPhase((curPhase<=0?4:curPhase-1));});
+  if(next)next.addEventListener('click',function(){applyPhase((curPhase>=4?0:curPhase+1));});
+  var dots=document.querySelectorAll('#phaseDots span');
+  for(var d=0;d<dots.length;d++){
+    (function(idx){
+      dots[idx].addEventListener('click',function(){applyPhase(idx);});
+    })(d);
+  }
+
+  showTip('top');
+  updateGuidePos();
+
+  var ticking=false;
+  function onScroll(){
+    if(ticking)return;
+    ticking=true;
+    requestAnimationFrame(function(){onScrollCore();ticking=false;});
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('touchmove',onScroll,{passive:true});
+  window.addEventListener('resize',function(){updateGuidePos();},{passive:true});
+  onScrollCore();
+}
+
+function enhanceWithGsap(){
+  if(typeof gsap==='undefined')return;
+  try{if(typeof ScrollTrigger!=='undefined')gsap.registerPlugin(ScrollTrigger);}catch(e){}
+  try{
+    gsap.from('.hero-tag,.hero h1,.hero-lead,.hero-stats',{y:24,opacity:0,duration:.65,stagger:.08,ease:'power3.out'});
+    var b1=document.getElementById('b1'),b2=document.getElementById('b2');
+    if(b1)gsap.to(b1,{x:20,y:12,duration:10,repeat:-1,yoyo:true,ease:'sine.inOut'});
+    if(b2)gsap.to(b2,{x:-12,y:-16,duration:12,repeat:-1,yoyo:true,ease:'sine.inOut'});
+  }catch(e){}
+  try{
+    if(window.matchMedia&&window.matchMedia('(min-width:769px)').matches&&typeof ScrollTrigger!=='undefined'){
+      gsap.utils.toArray('.stack-card').forEach(function(card,i,arr){
+        if(i===arr.length-1)return;
+        ScrollTrigger.create({trigger:card,start:'top top',end:'+=100%',pin:true,pinSpacing:false,scrub:1,
+          onUpdate:function(self){var p=self.progress;var inner=card.querySelector('.card-inner');if(inner)gsap.set(inner,{scale:1-p*.04,opacity:1-p*.28,y:-p*24});}});
+      });
+    }
+  }catch(e){}
+  try{
+    if(typeof ScrollTrigger!=='undefined'){
+      gsap.utils.toArray('.sec-head,.svc,.mp-item,.mem,.m-feat').forEach(function(el){
+        gsap.from(el,{y:22,opacity:0,duration:.5,ease:'power2.out',scrollTrigger:{trigger:el,start:'top 92%',toggleActions:'play none none none'}});
+      });
+    }
+  }catch(e){}
+}
+
+function loadScript(src,cb){
+  var s=document.createElement('script');
+  s.src=src;s.async=true;
+  s.onload=function(){if(cb)cb(true);};
+  s.onerror=function(){if(cb)cb(false);};
+  document.head.appendChild(s);
+}
+function loadGsap(){
+  var g=['https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js','https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js'];
+  var st=['https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js','https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js'];
+  function tryAt(i){
+    if(i>=g.length)return;
+    loadScript(g[i],function(ok){
+      if(!ok){tryAt(i+1);return;}
+      loadScript(st[i],function(){enhanceWithGsap();});
+    });
+  }
+  tryAt(0);
+}
+
+window.setBudget=renderBudget;
+window.setPhase=applyPhase;
+function boot(){
+  try{initCore();}catch(e){if(window.console)console.error('initCore',e);}
+  try{loadGsap();}catch(e){}
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);
+else boot();
+</script>
+</body>
+</html>
